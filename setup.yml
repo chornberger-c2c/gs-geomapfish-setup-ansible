@@ -15,6 +15,7 @@
       - python3
       - apache2
       - postgresql
+      - postgis
       - gnupg
       - python3-netifaces
       - python-netifaces
