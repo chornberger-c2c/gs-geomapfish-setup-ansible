@@ -1,0 +1,53 @@
+---
+
+# https://camptocamp.github.io/c2cgeoportal/2.4/integrator/requirements.html
+# Debian Stretch pre-install configuration
+
+- hosts: all
+  
+  tasks:
+
+  - name: install packages
+    apt:
+      update_cache: yes
+      name: 
+      - git
+      - python3
+      - apache2
+      - postgresql
+      - gnupg
+      - python3-netifaces
+      - python-netifaces
+      - docker-compose
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+  - name: add docker-ce repo key
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+      state: present
+
+  - name: setup docker-ce apt repo
+    apt_repository:
+      repo: deb https://download.docker.com/linux/debian stretch stable
+      state: present
+
+  - name: install docker-ce
+    apt:
+      update_cache: yes
+      name: docker-ce
+
+  - name: enable apache mod_proxy module
+    command: a2enmod proxy
+        
+  - name: enable apache mod_proxy_http module
+    command: a2enmod proxy_http
+
+  - name: reload apache
+    systemd:
+      state: reloaded
+      enabled: yes
+      name: apache2
+
